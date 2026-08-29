@@ -4,8 +4,8 @@
   "terminals": [
     {
       "name": "dev",
-      "command": "USE_MOCK=true pnpm dev",
-      "description": "Next.js 開発サーバー (http://localhost:3000)。USE_MOCK=true でモックデータを使用。"
+      "command": "pnpm dev",
+      "description": "Next.js 開発サーバー (http://localhost:3000)"
     }
   ],
   "ports": [

@@ -1,54 +1,69 @@
-import Link from "next/link";
-import { getAppealSheets } from "@/lib/data/appeals";
-import { StatusBadge } from "@/components/StatusBadge";
-import { formatAmount, formatDate } from "@/lib/display";
+import Image from "next/image";
 
-export const dynamic = "force-dynamic";
-
-export default async function HomePage() {
-  const sheets = await getAppealSheets();
-
+export default function Home() {
   return (
-    <div>
-      <div className="mb-6 flex items-end justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">稟議書一覧</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            {sheets.length} 件の稟議書
+    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+        <Image
+          className="dark:invert h-5 w-[100px]"
+          src="/next.svg"
+          alt="Next.js logo"
+          width={100}
+          height={20}
+          priority
+        />
+        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
+          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
+            To get started, edit the{" "}
+            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
+              page.tsx
+            </code>{" "}
+            file.
+          </h1>
+          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+            Looking for a starting point or more instructions? Head over to{" "}
+            <a
+              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+              className="font-medium text-zinc-950 dark:text-zinc-50"
+            >
+              Templates
+            </a>{" "}
+            or the{" "}
+            <a
+              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+              className="font-medium text-zinc-950 dark:text-zinc-50"
+            >
+              Learning
+            </a>{" "}
+            center.
           </p>
         </div>
-      </div>
-
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {sheets.map((sheet) => (
-          <li key={sheet.APPEAL_ID}>
-            <Link
-              href={`/appeals/${sheet.APPEAL_ID}`}
-              className="block rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <h2 className="font-semibold text-gray-900">{sheet.TITLE}</h2>
-                <StatusBadge status={sheet.STATUS} />
-              </div>
-              <p className="mt-1 text-xs text-gray-500">{sheet.APPEAL_ID}</p>
-              <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-700">
-                <div className="flex gap-1">
-                  <dt className="text-gray-500">申請者</dt>
-                  <dd>{sheet.APPLICANT_NAME}</dd>
-                </div>
-                <div className="flex gap-1">
-                  <dt className="text-gray-500">金額</dt>
-                  <dd>{formatAmount(sheet.AMOUNT)}</dd>
-                </div>
-                <div className="flex gap-1">
-                  <dt className="text-gray-500">申請日</dt>
-                  <dd>{formatDate(sheet.SUBMITTED_AT)}</dd>
-                </div>
-              </dl>
-            </Link>
-          </li>
-        ))}
-      </ul>
+        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+          <a
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
+            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              className="dark:invert h-[14px] w-4"
+              src="/vercel.svg"
+              alt="Vercel logomark"
+              width={16}
+              height={14}
+            />
+            Deploy Now
+          </a>
+          <a
+            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
+            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Documentation
+          </a>
+        </div>
+      </main>
     </div>
   );
 }
