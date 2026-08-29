@@ -20,9 +20,13 @@ const taskIdSchema = z.string().uuid("タスクが見つかりません。");
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
-async function requireUser() {
+type AuthContext =
+  | { ok: true; supabase: Awaited<ReturnType<typeof createClient>>; userId: string }
+  | { ok: false; error: string };
+
+async function requireUser(): Promise<AuthContext> {
   if (!isSupabaseConfigured()) {
-    return { error: "Supabase の環境変数が設定されていません。" as const };
+    return { ok: false, error: "Supabase の環境変数が設定されていません。" };
   }
 
   const supabase = await createClient();
@@ -30,10 +34,10 @@ async function requireUser() {
   const userId = data?.claims?.sub;
 
   if (error || !userId || typeof userId !== "string") {
-    return { error: "ログインが必要です。" as const };
+    return { ok: false, error: "ログインが必要です。" };
   }
 
-  return { supabase, userId };
+  return { ok: true, supabase, userId };
 }
 
 export async function createTask(input: {
@@ -47,8 +51,8 @@ export async function createTask(input: {
   }
 
   const auth = await requireUser();
-  if ("error" in auth) {
-    return { ok: false, error: auth.error };
+  if (!auth.ok) {
+    return auth;
   }
 
   const { error } = await auth.supabase.from("tasks").insert({
@@ -83,8 +87,8 @@ export async function updateTask(input: {
   }
 
   const auth = await requireUser();
-  if ("error" in auth) {
-    return { ok: false, error: auth.error };
+  if (!auth.ok) {
+    return auth;
   }
 
   const { error, data } = await auth.supabase
@@ -117,8 +121,8 @@ export async function updateTaskStatus(id: string, status: string): Promise<Acti
   }
 
   const auth = await requireUser();
-  if ("error" in auth) {
-    return { ok: false, error: auth.error };
+  if (!auth.ok) {
+    return auth;
   }
 
   const { error, data } = await auth.supabase
@@ -145,8 +149,8 @@ export async function deleteTask(id: string): Promise<ActionResult> {
   }
 
   const auth = await requireUser();
-  if ("error" in auth) {
-    return { ok: false, error: auth.error };
+  if (!auth.ok) {
+    return auth;
   }
 
   const { error, data } = await auth.supabase
