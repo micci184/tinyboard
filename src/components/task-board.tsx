@@ -1,5 +1,6 @@
 import type { Task, TaskStatus } from "@/lib/database.types";
 import { TASK_STATUS_LABEL, TASK_STATUSES } from "@/lib/task-status";
+import { FeedbackForm } from "@/components/feedback-form";
 import { TaskCard } from "@/components/task-card";
 import { TaskCreateForm } from "@/components/task-create-form";
 
@@ -42,6 +43,10 @@ export function TaskBoard({ tasks, loadError }: TaskBoardProps) {
           ))}
         </div>
       ) : null}
+
+      <div className="mt-6">
+        <FeedbackForm />
+      </div>
     </div>
   );
 }
