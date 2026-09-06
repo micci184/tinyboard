@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { AppHeader } from "@/components/app-header";
+import { FeedbackForm } from "@/components/feedback-form";
 import { SetupNotice } from "@/components/setup-notice";
 import { TaskBoard } from "@/components/task-board";
 import type { Task } from "@/lib/database.types";
@@ -37,6 +38,9 @@ export default async function HomePage() {
           tasks={tasks}
           loadError={error ? "タスクの読み込みに失敗しました。時間をおいて再度お試しください。" : null}
         />
+        <div className="mx-auto w-full max-w-6xl px-6 pb-8">
+          <FeedbackForm />
+        </div>
       </main>
     </div>
   );
