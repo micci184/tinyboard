@@ -13,6 +13,7 @@
 3. タスク作成
 4. タスク更新（タイトル・説明・ステータス）
 5. タスク削除（確認つき）
+6. ログイン後ホームからのフィードバック送信（`public.feedback`）
 
 未ログインのユーザーはログイン画面へリダイレクトされます。各ユーザーは自分の行だけ閲覧・操作できます。
 
@@ -49,7 +50,7 @@ pnpm dev
 1. [Supabase](https://supabase.com/) でプロジェクトを作成する
 2. Project Settings → API から Project URL と anon / publishable キーを控える
 3. マイグレーションを適用する（どちらか）
-   - **SQL Editor**: `supabase/migrations/20260829120000_create_tasks.sql` の内容を実行
+   - **SQL Editor**: `supabase/migrations/` 内の SQL（タスクとフィードバック）を実行
    - **Supabase CLI**: `supabase db push`（または `supabase migration up`）
 4. Authentication → Providers で Email が有効なことを確認する
 5. デモ用途では Authentication → Providers → Email の **Confirm email** をオフにすると、登録直後にログインできます
@@ -60,6 +61,8 @@ pnpm dev
 - `public.tasks`（`id`, `user_id`, `title`, `description`, `status`, `created_at`, `updated_at`）
 - `status` は `todo` / `in_progress` / `done`
 - RLS により `authenticated` ユーザーは `user_id = auth.uid()` の行だけ SELECT / INSERT / UPDATE / DELETE できる
+- `public.feedback`（`id`, `user_id`, `message`, `created_at`）
+- RLS により `authenticated` ユーザーは自分の行だけ INSERT できる（`user_id = auth.uid()`）
 
 ## ビルド
 
@@ -73,4 +76,5 @@ pnpm build
 - `src/lib/supabase/server.ts` — Server Components / Server Actions 用クライアント
 - `src/lib/supabase/proxy.ts` + `src/proxy.ts` — Cookie セッションの更新と未ログイン時のリダイレクト（Next.js 16 の Proxy。旧 middleware 相当）
 - `src/app/actions/tasks.ts` — タスク CRUD の Server Actions
+- `src/app/actions/feedback.ts` — フィードバック送信の Server Action
 - `supabase/migrations` — スキーマと RLS

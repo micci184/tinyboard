@@ -10,6 +10,13 @@ export type Task = {
   updated_at: string;
 };
 
+export type Feedback = {
+  id: string;
+  user_id: string;
+  message: string;
+  created_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -32,6 +39,22 @@ export type Database = {
           status?: TaskStatus;
           created_at?: string;
           updated_at?: string;
+        };
+        Relationships: [];
+      };
+      feedback: {
+        Row: Feedback;
+        Insert: {
+          id?: string;
+          user_id: string;
+          message: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          message?: string;
+          created_at?: string;
         };
         Relationships: [];
       };
