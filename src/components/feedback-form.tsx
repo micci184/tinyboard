@@ -37,7 +37,6 @@ export function FeedbackForm() {
         <span className="mb-1 block text-xs font-medium text-zinc-600">メッセージ</span>
         <textarea
           name="message"
-          required
           maxLength={2000}
           rows={4}
           value={message}
